@@ -23,4 +23,4 @@ The game supports **two players** (X and O) taking turns until one wins or the b
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/<your-username>/tic-tac-toe-c.git
+   git clone https://github.com/HaytamNaim/tic-tac-toe-c.git
