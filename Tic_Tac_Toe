@@ -1,0 +1,113 @@
+#include <stdio.h>
+
+// Function to display the current Tic-Tac-Toe board
+void displayBoard(char board[3][3])
+{
+    int i, j;
+    for (i = 0; i < 3; i++)
+    {
+        for (j = 0; j < 3; j++)
+        {
+            printf("%c", board[i][j]);// Print the cell
+            printf("|"); // Add column separator
+        }
+        printf("\n");
+    }
+}
+
+// Function to get player's move (row and column)
+void getPlayerMove(int *row, int *col)
+{
+    printf("Enter row number (1-3): ");
+    scanf("%d", row);
+    printf("Enter column number (1-3): ");
+    scanf("%d", col);
+
+      // Convert from 1-based indexing (user input) to 0-based indexing (C arrays)
+    (*row)--;
+    (*col)--;
+}
+
+// Function to validate if a move is legal
+int validatePlayerMove(char board[3][3], int row, int col)
+{
+    if (row < 0 || row >= 3 || col < 0 || col >= 3)
+    {
+        printf("Invalid move. Row and column numbers must be between 1 and 3.\n");
+        return 0;
+    }
+    if (board[row][col] != ' ')
+    {
+        printf("The place is not empty. Choose another place.\n");
+        return 0;
+    }
+    return 1;
+}
+
+// Function to check if any player has won
+int checkWin(char board[3][3])
+{
+    // Check rows
+    for (int i = 0; i < 3; i++)
+    {
+        if (board[i][0] == board[i][1] && board[i][1] == board[i][2] && board[i][0] != ' ')
+            return 1;
+    }
+    // Check columns
+    for (int j = 0; j < 3; j++)
+    {
+        if (board[0][j] == board[1][j] && board[1][j] == board[2][j] && board[0][j] != ' ')
+            return 1;
+    }
+    // Check diagonals
+    if ((board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] != ' ') ||
+        (board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[0][2] != ' '))
+        return 1;
+
+    return 0;  // No winner yet
+}
+
+int main()
+{
+    // Initialize empty board
+    char board[3][3] = {{' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '}};
+    char currentPlayer = 'X'; // Player 1 starts
+    int row, col;
+
+    while (!checkWin(board))
+    {
+        // Display board
+        displayBoard(board);
+
+        // Show current player
+        if(currentPlayer == 'X')
+            printf("Player 1 turn:\n");
+        else
+            printf("Player 2 turn:\n");
+
+        // Get move from player
+        getPlayerMove(&row, &col);
+
+        // Validate and apply move
+        if (validatePlayerMove(board, row, col))
+        {
+            board[row][col] = currentPlayer; // Place mark
+
+             // Check for winner
+            if (checkWin(board))
+            {
+                if(currentPlayer == 'X')
+                    printf("Player 1 wins!\n");
+                else 
+                    printf("Player 2 wins!\n");
+                displayBoard(board);
+                break;
+            }
+
+             // Switch player
+            currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+        }
+    }
+
+    return 0;
+}
